@@ -1,0 +1,16 @@
+name: First Keys checks
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: unzip -q First-Keys-Source.zip -d source
+      - run: npm run check && npm test && npm run build
+        working-directory: source
+      - run: cmp index.html First-Keys.html
